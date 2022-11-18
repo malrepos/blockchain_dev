@@ -13,13 +13,28 @@ All solidity code is encapsulated in contracts. All variables and functions belo
 
 ### Integers
 
+uint (unsigned)
+
+int
+
+uint256 favoriteNumber = 43;
+(size 256 bits) (name) (value)
+
 ### bool
+
+bool favoriteBool = True;
 
 ### string
 
+string favoriteString = "Go fuck yourself";
+
 ### address
 
+address favorityAddress = 0x....;
+
 ### bytes32
+
+bytes32 favorityBytes = "Cat"; (converts down into bytes)
 
 Use // to make comments in Solidity.
 
@@ -32,6 +47,8 @@ code block
 }
 
 Any function call is also a transaction on the blockchain.
+
+Functions are public by default. Meaning anyone or any contract can call your contracts functions.
 
 ### Function Visibility
 
@@ -64,6 +81,98 @@ The above function doesn't actually change state in Solidity — e.g. it doesn't
 So in this case we could declare it as a view function, meaning it's only viewing the data but not modifying it:
 
 function sayHello() public view returns (string memory) {
+
+- functions or variables that are private are not accessible outside the contract, even to inherited contracts
+- internal is the same as private, except that it is also accessible to contracts that inherit from it.
+- external is similar to public, except that these functions can only be called outside the contract, not by functions inside the contract
+
+### Function Return Values
+
+The funtion declaration contains the type of return value.
+
+string greeting = "What's up Doc?";
+
+function sayHello() public returns(string memory){
+return greeting;
+}
+
+#### Multiple Return Values
+
+function multipleReturns() internal returns(uint a, uint b, uint c){
+return (1, 2, 3);
+}
+
+function processMultipleReturns() external {
+uint a;
+uint b;
+uint c;
+(a,b,c) = multipleReturns();
+}
+
+OR
+
+(,,c) = multipleReturns();
+
+### Function Declarations
+
+function eatHamburgers(string memory \_name, uint \_amount) public {
+
+}
+
+> this function takes 2 parameters
+> all reference types - arrays, strings, mappings, structs - require instructions about where it should be stored eg. memory
+
+We would call this function thus:
+
+eatHamburgers("Mal", 3);
+
+- view: we're only viewing the data, not mdifying it.
+
+  function sayHello() public view returns( string memory){}
+
+- pure: we're not accessing any data in the app
+
+  function \_multiply(uint \_a, uint \_b) private pure returns(uint){
+  return a\*b;
+  }
+
+### Function Modifiers
+
+A function modifier looks like a function except uses modifier instead of function
+
+A modifier can't be called directly like a function. Instead we attach the modifiers name at the end of a function definition to change the function's behavior.
+
+The most common way to use modifiers is to add a require check before a function executes.
+
+This can be used maliciously, for the owner to have a backdoor.
+
+Function modifiers can take arguments.
+
+A function can pass it's arguments to it's modifier.
+
+### Payable Modifier
+
+This is a special type of function that can receive ether.
+
+This makes it possible to call a function and pay money to the contract at the same time.
+
+It allows payment to a contract to execute a function.
+
+If a function is not marked payable and you try to send ether to it, the function will reject your transaction.
+
+### Withdraws
+
+Money sent to a contract is trapped there, unless you add a function to withdraw ether.
+
+You cannot transfer ether to an address unless that address is of type payable.
+
+You can use .transfer to send funds to any ethereum address.
+
+### Internal Functions
+
+\_functionName() internal{}
+
+- it is convention to name internal functions with a preceeding underscore
 
 ## Structs
 
